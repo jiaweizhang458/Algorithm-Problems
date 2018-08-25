@@ -5,7 +5,8 @@ public:
 	* @return: Return the steps you need at least
 	*/
 
-	void BFS(const vector<vector<int>> grid, const std::pair<int, int> startPoint, const std::pair<int, int> endPoint, vector<vector<int>> &vecCur) {
+	void BFS(const vector<vector<int>> grid, const std::pair<int, int> startPoint, const std::pair<int, int> endPoint,
+		vector<vector<int>> &vecCur) {
 		int distance = 0;
 		int rows = grid.size();
 		int cols = grid[0].size();
@@ -28,10 +29,14 @@ public:
 					continue;
 				}
 
-				if (curRow - 1 >= 0 && vecBool[curRow - 1][curCol] == 0) queueBFS.push(std::pair<int, int>(curRow - 1, curCol));
-				if (curRow + 1 < rows && vecBool[curRow + 1][curCol] == 0) queueBFS.push(std::pair<int, int>(curRow + 1, curCol));
-				if (curCol - 1 >= 0 && vecBool[curRow][curCol - 1] == 0) queueBFS.push(std::pair<int, int>(curRow, curCol - 1));
-				if (curCol + 1 < cols && vecBool[curRow][curCol + 1] == 0) queueBFS.push(std::pair<int, int>(curRow, curCol + 1));
+				if (curRow - 1 >= 0 && vecBool[curRow - 1][curCol] == 0)
+					queueBFS.push(std::pair<int, int>(curRow - 1, curCol));
+				if (curRow + 1 < rows && vecBool[curRow + 1][curCol] == 0)
+					queueBFS.push(std::pair<int, int>(curRow + 1, curCol));
+				if (curCol - 1 >= 0 && vecBool[curRow][curCol - 1] == 0)
+					queueBFS.push(std::pair<int, int>(curRow, curCol - 1));
+				if (curCol + 1 < cols && vecBool[curRow][curCol + 1] == 0)
+					queueBFS.push(std::pair<int, int>(curRow, curCol + 1));
 			}
 			distance++;
 		}
@@ -43,7 +48,7 @@ public:
 		int cols = grid[0].size();
 
 		std::pair<int, int> leftUp(0, 0);                    // (row, col)
-		std::pair<int, int> rightDown(rows - 1, cols - 1);  
+		std::pair<int, int> rightDown(rows - 1, cols - 1);  //
 
 		vector<int> vecDisTemp(cols, -1);
 		vector<vector<int>> vecLeftUp(rows, vecDisTemp);    // distance to left up
