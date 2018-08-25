@@ -1,3 +1,24 @@
+﻿//1446. 01 Matrix Walking Problem
+//Given an 01 matrix gird of size n*m, 1 is a wall, 0 is a road, now you can turn a 1 in the grid into 0, 
+//Is there a way to go from the upper left corner to the lower right corner ? 
+//If there is a way to go, how many steps to take at least ?
+//
+//Example
+//Given a = [[0, 1, 0, 0, 0], [0, 0, 0, 1, 0], [1, 1, 0, 1, 0], [1, 1, 1, 1, 0]]，return 7.
+//
+//Explanation :
+//	Change `1` at(0, 1) to `0`, the shortest path is as follows :
+//(0, 0)->(0, 1)->(0, 2)->(0, 3)->(0, 4)->(1, 4)->(2, 4)->(3, 4) There are many other options of length `7`, not listed here.
+//Given a = [[0, 1, 1], [1, 1, 0], [1, 1, 0]], return -1.
+//
+//Explanation:
+//Regardless of which `1` is changed to `0`, there is no viable path.
+//Notice
+//1 <= n <= 1000
+//1 <= m <= 1000
+​​
+
+
 class Solution {
 public:
 	/**
