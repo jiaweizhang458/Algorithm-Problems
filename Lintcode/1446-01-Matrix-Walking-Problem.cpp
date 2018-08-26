@@ -18,7 +18,7 @@
 //1 <= m <= 1000
 ​​
 
-
+//Solution 1: 73% accepted but TLE afterwards.
 class Solution {
 public:
 	/**
@@ -87,6 +87,94 @@ public:
 			}
 		}
 		if (result == 5000) return -1;
+		return result;
+	}
+
+};
+//Solution 1
+
+//Solution 2: ugly but working
+//Reference: https://www.jiuzhang.com/solution/01-matrix-walking-problem/#tag-highlight-lang-cpp
+class Solution {
+public:
+	/**
+	* @param grid: The gird
+	* @return: Return the steps you need at least
+	*/
+
+	struct Point {
+		int row;
+		int col;
+		int state;
+	};
+
+	void BFS(const vector<vector<int>> grid, vector<vector<int>> &vecZero, vector<vector<int>> &vecOne, const vector<std::pair<int, int>> vecNeighbor) {
+		int rows = grid.size();
+		int cols = grid[0].size();
+
+		queue<Point> queueBFS; //
+		vecZero[0][0] = 0;
+
+		Point origin = { 0, 0, 0 };
+		queueBFS.push(origin);
+		while (!queueBFS.empty()) {
+			Point curPoint = queueBFS.front();
+			int curRow = curPoint.row;
+			int curCol = curPoint.col;
+			int curValue = curPoint.state;
+			queueBFS.pop();
+
+			for (int i = 0; i < vecNeighbor.size(); i++) {
+				int nextRow = curRow + vecNeighbor[i].first;
+				int nextCol = curCol + vecNeighbor[i].second;
+
+				if (nextRow < 0 || nextRow >= rows || nextCol < 0 || nextCol >= cols) continue;
+
+				int nextValue = curValue + grid[nextRow][nextCol];
+				if (nextValue > 1) continue;
+				else if (nextValue == 1) {
+					if (vecOne[nextRow][nextCol] != 5001) continue;
+					if (curValue == 0) {
+						vecOne[nextRow][nextCol] = vecZero[curRow][curCol] + 1;
+						std::cout << vecOne[nextRow][nextCol] << std::endl;
+					}
+					else {
+						vecOne[nextRow][nextCol] = vecOne[curRow][curCol] + 1;
+						std::cout << vecOne[nextRow][nextCol] << std::endl;
+					}
+				}
+				else { // nextValue = 0
+					if (vecZero[nextRow][nextCol] != 5001) continue;
+					vecZero[nextRow][nextCol] = vecZero[curRow][curCol] + 1;
+					std::cout << vecZero[nextRow][nextCol] << std::endl;
+				}
+				Point nextPoint = { nextRow, nextCol, nextValue };
+				queueBFS.push(nextPoint);
+			}
+		}
+		return;
+	};
+
+	int getBestRoad(vector<vector<int>> &grid) {
+		int rows = grid.size();
+		int cols = grid[0].size();
+
+
+		vector<int> vecDisTemp(cols, 5001);
+		vector<vector<int>> vecZero(rows, vecDisTemp);    // distance to left up
+		vector<vector<int>> vecOne(rows, vecDisTemp); // distance to right down
+		vector<std::pair<int, int>> vecNeighbor(4);
+		vecNeighbor[0] = std::pair<int, int>(-1, 0);
+		vecNeighbor[1] = std::pair<int, int>(1, 0);
+		vecNeighbor[2] = std::pair<int, int>(0, -1);
+		vecNeighbor[3] = std::pair<int, int>(0, 1);
+
+		BFS(grid, vecZero, vecOne, vecNeighbor);
+
+		int result = 5001;
+		if (result > vecZero[rows - 1][cols - 1]) result = vecZero[rows - 1][cols - 1];
+		if (result > vecOne[rows - 1][cols - 1]) result = vecOne[rows - 1][cols - 1];
+		if (result == 5001) return -1;
 		return result;
 	}
 
