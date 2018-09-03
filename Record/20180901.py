@@ -1,6 +1,6 @@
 # Return max length of sublist that contains only two elements.
 
-a = [1,2,3,4,3,3,4,2]
+a = [1,2,1,2,1,2]
 dic = {}
 
 cur_res = 0
