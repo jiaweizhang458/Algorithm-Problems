@@ -61,3 +61,69 @@ public:
 
 //Solution 2: BFS
 //Reference: https://blog.csdn.net/carbon06/article/details/80497615\
+class Solution {
+public:
+	/**
+	* @param accounts: List[List[str]]
+	* @return: return a List[List[str]]
+	*/
+
+	set<string> bfs(const vector<vector<string>> &accounts,
+		const unordered_map<string, vector<int>> &emailIndices,
+		unordered_set<string> &visited,
+		const string &email) {
+		set<string> result;
+		queue<string> qBFS;
+		qBFS.push(email);
+		while (!qBFS.empty()) {
+			string curEmail = qBFS.front();
+			qBFS.pop();
+			result.insert(curEmail);
+			if (visited.count(curEmail) != 0) continue;
+			auto indices = emailIndices.at(curEmail);
+			for (int indice : indices) {
+				for (int j = 1; j < accounts[indice].size(); j++) {
+					if (visited.count(accounts[indice][j]) == 0) {
+						qBFS.push(accounts[indice][j]);
+					}
+				}
+			}
+			visited.insert(curEmail);
+		}
+		return result;
+
+	}
+
+
+	vector<vector<string>> accountsMerge(vector<vector<string>> &accounts) {
+		unordered_map<string, vector<int>> emailIndices;
+		for (int i = 0; i < accounts.size(); i++) {
+			for (int j = 1; j < accounts[i].size(); j++) {
+				if (emailIndices.count(accounts[i][j])) {
+					emailIndices[accounts[i][j]].push_back(i);
+				}
+				else {
+					emailIndices[accounts[i][j]] = vector<int>{ i };
+				}
+
+			}
+		}
+
+		vector<vector<string>> result;
+		unordered_set<string> visited;
+		for (auto emailIndice : emailIndices) {
+			string email = emailIndice.first;
+			vector<int> indice = emailIndice.second;
+			string name = accounts[indice[0]][0];
+			vector<string> resTemp;
+			resTemp.push_back(name);
+			if (visited.count(email) == 0) {
+				for (auto siblings : bfs(accounts, emailIndices, visited, email)) {
+					resTemp.push_back(siblings);
+				}
+				result.push_back(resTemp);
+			}
+		}
+		return result;
+	}
+};
